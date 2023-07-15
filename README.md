@@ -4,19 +4,19 @@ The project has helped us appreciate the convenience of static variables in the 
 
 MANDATORY RULES
 
-Function Name		: get_next_line
+Function Name		    : get_next_line
 
-Prototype          		: int get_next_line(int fd, char **line);
+Prototype          	: int get_next_line(int fd, char **line);
 
 Submission Files   	: get_next_line.c, get_next_line_utils.c, get_next_line.h
 
 Parameters         	: #1. file descriptor for reading, 
                      		  #2. The value of what has been read
 
-Return Value       	: 1 : A line has been read
+Return Value       	:     1 : A line has been read
                      		  0 : EOF has been reached
                     		 -1 : An error happened 
 
 External Functions 	: read, malloc, free
 
-Notes              	: Global Variables are forbidden. Reading uses the BUFFER_SIZE defined during compilation using the command  gcc -Wall -Wextra -Werror -D BUFFER_SIZE=32 get_next_line.c get_next_line_utils.c.
+Notes              	: Global Variables are forbidden. Reading uses the BUFFER_SIZE defined during compilation using the command  gcc -Wall -                            Wextra -Werror -D BUFFER_SIZE=32 get_next_line.c get_next_line_utils.c.
