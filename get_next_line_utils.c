@@ -1,4 +1,7 @@
-#include "get_next_line.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
 
 
 void print_message(char *str)
