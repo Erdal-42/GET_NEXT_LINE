@@ -5,9 +5,10 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#include <fcntl.h>
 #include "get_next_line_utils.c" 
 
-#define BUFFER_SIZE	10
+#define BUFFER_SIZE 5
 
 char	*read_line(int, char *);
 char	*ft_strjoin(char *, char *);

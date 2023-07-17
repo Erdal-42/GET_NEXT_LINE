@@ -13,6 +13,8 @@ void print_message(char *str)
 
 int	present_nl(char *str)
 {
+	if (!str)
+		return (0);
 	while (*str)
 	{
 		if (*(str ++) == '\n')
