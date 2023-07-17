@@ -13,7 +13,7 @@ char	*read_line(int, char *);
 char	*ft_strjoin(char *, char *);
 int		ft_strlen(char *);
 char	*get_line(char *);
-char	*truncate(char *);
+char	*ft_truncate(char *);
 int     present_nl(char *);
 void    print_message(char *);
 

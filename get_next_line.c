@@ -23,11 +23,11 @@ char *get_next_line(int fd)
 		return (NULL);
 	
 	line = get_line(reserve);
-	reserve = truncate(reserve);
+	reserve = ft_truncate(reserve);
 	return (line);
 }
 
-char	*truncate(char *reserve)
+char	*ft_truncate(char *reserve)
 {
 	int 	i;
 	char	*leftover;
