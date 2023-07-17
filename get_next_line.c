@@ -40,16 +40,10 @@ char	*ft_get_line(char *save)
 	return (s);
 }
 
-int	present_nl(char *str)
+void	exit_program(char *reserve)
 {
-	if (!str)
-		return (0);
-	while (*str)
-	{
-		if (*(str ++) == '\n')
-			return (1);
-	}
-	return (0);
+	free (reserve);
+	exit (EXIT_FAILURE);
 }
 
 char	*ft_save(char *reserve)
@@ -59,26 +53,24 @@ char	*ft_save(char *reserve)
     int     mark;
     char    *leftover;
 
-    if (reserve == NULL)
-        return (NULL); 	//OK
-    if (!present_nl(reserve))
-	{
-		free(reserve);
-        return (NULL); 	//OK
-	}
-    i = 0;				//OK
+    i = 0;
     while (reserve[i])
     {
         if (reserve[i ++] == '\n')
             break;
     }
+	if (!reserve[i])
+	{
+		free(reserve)
+		return (NULL);
+	}
     mark = i ++;
     while (reserve[i])
         ++ i;
-    leftover = malloc(sizeof(leftover) * (i - mark + 1));
+    leftover = malloc(sizeof(*leftover) * (i - mark + 1));
     if (!leftover)
-        //exit_program(reserve);
-		return (NULL);
+        exit_program(reserve);
+		//return (NULL);
     j = 0;
     while (mark < i)
         leftover[j ++] = reserve[mark ++];
