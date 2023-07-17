@@ -40,30 +40,37 @@ char	*ft_get_line(char *save)
 	return (s);
 }
 
-char	*ft_save(char *save)
+char	*ft_save(char *reserve)
 {
-	int		i;
-	int		c;
-	char	*s;
+	int 	i;
+	char	*leftover;
 
-	i = 0;
-	while (save[i] && save[i] != '\n')
-		i++;
-	if (!save[i])
+	while (*reserve)
 	{
-		free(save);
+		if (*(reserve ++) == '\n')
+			break; 
+	}
+	i = 0;
+	while (*(reserve ++))
+		++ i;
+	if (!i)
+	{
+		free(reserve);		
 		return (NULL);
 	}
-	s = (char *)malloc(sizeof(char) * (ft_strlen(save) - i + 1));
-	if (!s)
-		return (NULL);
-	i++;
-	c = 0;
-	while (save[i])
-		s[c++] = save[i++];
-	s[c] = '\0';
-	free(save);
-	return (s);
+	leftover = malloc(sizeof(*leftover) * (i + 1));
+	if (!leftover)
+	{
+//		print_message("error: Unable to allocate memory.");
+//		exit_program(reserve);
+		return (NULL);	
+	}
+	i = 0;
+	while (*reserve)
+		leftover[i ++] = *(reserve ++);
+	leftover[i] = '\0';
+	free(reserve);
+	return (leftover);
 }
 
 char	*ft_read_and_save(int fd, char *save)
@@ -103,17 +110,6 @@ char	*get_next_line(int fd)
 	line = ft_get_line(save);
 	save = ft_save(save);
 	return (line);
-}
-
-int	main()
-{
-	int fd;
-
-	fd = open("test.txt", O_RDONLY);
-	while (printf("%s", get_next_line(fd) > 0))
-		;
-	close(fd);
-	return (0);
 }
 
 
