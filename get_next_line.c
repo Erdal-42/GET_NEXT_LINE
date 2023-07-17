@@ -12,6 +12,30 @@
 
 #include "get_next_line.h"
 
+void print_message(char *str)
+{
+	while (*str)
+		write(2, str ++, 1);
+}
+
+int	present_nl(char *str)
+{
+	if (!str)
+		return (0);
+	while (*str)
+	{
+		if (*(str ++) == '\n')
+			return (1);
+	}
+	return (0);
+}
+
+void	exit_program(char *reserve)
+{
+	free (reserve);
+	exit (EXIT_FAILURE);
+}
+
 char	*ft_get_line(char *save)
 {
 	int		i;
@@ -40,30 +64,38 @@ char	*ft_get_line(char *save)
 	return (s);
 }
 
-char	*ft_save(char *save)
+char	*ft_save(char *reserve)
 {
-	int		i;
-	int		c;
-	char	*s;
+    int     i;
+    int     j;
+    int     mark;
+    char    *leftover;
 
-	i = 0;
-	while (save[i] && save[i] != '\n')
-		i++;
-	if (!save[i])
+    if (reserve == NULL)
+        return (NULL);
+    if (!present_nl(reserve))
 	{
-		free(save);
-		return (NULL);
+		free(reserve)
+        return (NULL);
 	}
-	s = (char *)malloc(sizeof(char) * (ft_strlen(save) - i + 1));
-	if (!s)
-		return (NULL);
-	i++;
-	c = 0;
-	while (save[i])
-		s[c++] = save[i++];
-	s[c] = '\0';
-	free(save);
-	return (s);
+    i = 0;
+    while (reserve[i])
+    {
+        if (reserve[i ++] == '\n')
+            break;
+    }
+    mark = i ++;
+    while (reserve[i])
+        ++ i;
+    leftover = malloc(sizeof(leftover) * (i - mark + 1));
+    if (!leftover)
+        exit_program(reserve);
+    j = 0;
+    while (mark < i)
+        leftover[j ++] = reserve[mark ++];
+    free(reserve);
+    leftover[j] = '\0';
+    return (leftover);
 }
 
 char	*ft_read_and_save(int fd, char *save)
