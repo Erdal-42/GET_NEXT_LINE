@@ -40,35 +40,30 @@ char	*ft_get_line(char *save)
 	return (s);
 }
 
-char	*ft_save(char *reserve)
+char	*ft_save(char *save)
 {
-    int     i;
-    int     j;
-    int     mark;
-    char    *leftover;
+	int		i;
+	int		c;
+	char	*s;
 
-    if (reserve == NULL)
-        return (NULL);
-    if (!present_nl(reserve))
-        return (NULL);
-    i = 0;
-    while (reserve[i])
-    {
-        if (reserve[i ++] == '\n')
-            break;
-    }
-    mark = i ++;
-    while (reserve[i])
-        ++ i;
-    leftover = malloc(sizeof(leftover) * (i - mark + 1));
-    if (!leftover)
-        exit_program(reserve);
-    j = 0;
-    while (mark < i)
-        leftover[j ++] = reserve[mark ++];
-    free(reserve);
-    leftover[j] = '\0';
-    return (leftover);
+	i = 0;
+	while (save[i] && save[i] != '\n')
+		i++;
+	if (!save[i])
+	{
+		free(save);
+		return (NULL);
+	}
+	s = (char *)malloc(sizeof(char) * (ft_strlen(save) - i + 1));
+	if (!s)
+		return (NULL);
+	i++;
+	c = 0;
+	while (save[i])
+		s[c++] = save[i++];
+	s[c] = '\0';
+	free(save);
+	return (s);
 }
 
 char	*ft_read_and_save(int fd, char *save)
@@ -109,5 +104,7 @@ char	*get_next_line(int fd)
 	save = ft_save(save);
 	return (line);
 }
+
+
 
 
