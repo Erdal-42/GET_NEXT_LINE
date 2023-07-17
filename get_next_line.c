@@ -1,115 +1,142 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: elraira- <elraira-@student.42sp.org.br>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/03 10:39:55 by elraira-          #+#    #+#             */
-/*   Updated: 2021/09/05 14:05:59 by elraira-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "get_next_line.h"
 
-char	*ft_get_line(char *save)
-{
-	int		i;
-	char	*s;
 
-	i = 0;
-	if (!save[i])
-		return (NULL);
-	while (save[i] && save[i] != '\n')
-		i++;
-	s = (char *)malloc(sizeof(char) * (i + 2));
-	if (!s)
-		return (NULL);
-	i = 0;
-	while (save[i] && save[i] != '\n')
-	{
-		s[i] = save[i];
-		i++;
-	}
-	if (save[i] == '\n')
-	{
-		s[i] = save[i];
-		i++;
-	}
-	s[i] = '\0';
-	return (s);
+void	exit_program(char *reserve)
+{
+	free (reserve);
+	exit (EXIT_FAILURE);
 }
 
-char	*ft_save(char *reserve)
+char *get_next_line(int fd)
 {
-	int 	i;
-	char	*leftover;
-
-	while (*reserve)
-	{
-		if (*(reserve ++) == '\n')
-			break; 
-	}
-	i = 0;
-	while (*(reserve ++))
-		++ i;
-	if (!i)
-	{
-		free(reserve);		
-		return (NULL);
-	}
-	leftover = malloc(sizeof(*leftover) * (i + 1));
-	if (!leftover)
-	{
-//		print_message("error: Unable to allocate memory.");
-//		exit_program(reserve);
-		return (NULL);	
-	}
-	i = 0;
-	while (*reserve)
-		leftover[i ++] = *(reserve ++);
-	leftover[i] = '\0';
-	free(reserve);
-	return (leftover);
-}
-
-char	*ft_read_and_save(int fd, char *save)
-{
-	char	*buff;
-	int		read_bytes;
-
-	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buff)
-		return (NULL);
-	read_bytes = 1;
-	while (!ft_strchr(save, '\n') && read_bytes != 0)
-	{
-		read_bytes = read(fd, buff, BUFFER_SIZE);
-		if (read_bytes == -1)
-		{
-			free(buff);
-			return (NULL);
-		}
-		buff[read_bytes] = '\0';
-		save = ft_strjoin(save, buff);
-	}
-	free(buff);
-	return (save);
-}
-
-char	*get_next_line(int fd)
-{
+	static char	*reserve;
 	char		*line;
-	static char	*save;
+	static int	i = 1;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (0);
-	save = ft_read_and_save(fd, save);
-	if (!save)
+	if (fd < 0 || BUFFER_SIZE < 1)
+	{
+		print_message("error: Invalid Parameter");
 		return (NULL);
-	line = ft_get_line(save);
-	save = ft_save(save);
+	}
+	if (!present_nl(reserve))
+	{
+		reserve = read_line(fd, reserve);
+//		printf("%d: Reserve: %s\n", i, reserve);
+	}
+	if (!reserve)
+		return (NULL);
+	
+	line = get_line(reserve);
+//	printf("%d: Line: %s\n", i, line);
+	reserve = ft_truncate(reserve);
+//	printf("Strlen of reserve: %d\n", ft_strlen(reserve));
+//	printf("%d: Truncated Reserve: %s\n", i, reserve);
+	++ i;
+	return (line);
+}
+
+char    *ft_truncate(char *reserve)
+{
+    int     i;
+    int     j;
+    int     mark;
+    char    *leftover;
+
+    if (reserve == NULL)
+        return (NULL);
+    if (!present_nl(reserve))
+        return (NULL);
+    i = 0;
+    while (reserve[i])
+    {
+        if (reserve[i ++] == '\n')
+            break;
+    }
+    mark = i ++;
+    while (reserve[i])
+        ++ i;
+    leftover = malloc(sizeof(leftover) * (i - mark + 1));
+    if (!leftover)
+        exit_program(reserve);
+    j = 0;
+    while (mark < i)
+        leftover[j ++] = reserve[mark ++];
+    free(reserve);
+    leftover[j] = '\0';
+    return (leftover);
+}
+
+char	*get_line(char *reserve)
+{
+	char	*line;
+	int		i;
+	int		j;
+
+	i = 0;
+	while (reserve[i])
+	{
+		if (reserve[i] == '\n')
+			break ;
+		++ i;
+	}
+	line = malloc(sizeof(*line) * (i + 1));
+	if (!line)
+	{
+		print_message("error: Unable to allocate memory.");
+		exit_program(reserve);
+	}
+	j = 0;
+	while (j <= i)
+	{
+		line[j] = reserve[j];
+		++ j;
+	}
+	line[j] = '\0';
 	return (line);
 }
 
 
+char	*read_line(int fd, char *reserve)
+{
+	char	*buffer;
+	int		size;
+
+	buffer = malloc(sizeof(*buffer) * (BUFFER_SIZE + 1));
+	if (!buffer)
+	{
+		print_message("error: Unable to allocate memory.");
+		exit_program(reserve);
+	}
+	size = read(fd, buffer, BUFFER_SIZE);
+	buffer[size] = '\0';
+	if (size < 1)
+	{
+		free (buffer);
+		return (NULL);
+	}
+	while (size > 0)
+	{
+		reserve = ft_strjoin(reserve, buffer);
+		if (!reserve)
+			exit_program(reserve);
+		if (present_nl(reserve))
+			break;
+		size = read(fd, buffer, BUFFER_SIZE);
+		buffer[size] = '\0';
+	}
+	free(buffer);
+	return (reserve);
+}
+/*
+int	main()
+{
+	int fd;
+	char *str;
+
+	fd = open("test.txt", O_RDONLY);
+	while ((str = get_next_line(fd)) != NULL)
+		printf("%s", str);
+	close(fd);
+	return (0);
+}
+*/
