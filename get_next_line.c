@@ -12,30 +12,6 @@
 
 #include "get_next_line.h"
 
-void print_message(char *str)
-{
-	while (*str)
-		write(2, str ++, 1);
-}
-
-int	present_nl(char *str)
-{
-	if (!str)
-		return (0);
-	while (*str)
-	{
-		if (*(str ++) == '\n')
-			return (1);
-	}
-	return (0);
-}
-
-void	exit_program(char *reserve)
-{
-	free (reserve);
-	exit (EXIT_FAILURE);
-}
-
 char	*ft_get_line(char *save)
 {
 	int		i;
@@ -72,13 +48,13 @@ char	*ft_save(char *reserve)
     char    *leftover;
 
     if (reserve == NULL)
-        return (NULL);
+        return (NULL); 	//OK
     if (!present_nl(reserve))
 	{
-		free(reserve)
-        return (NULL);
+		free(reserve);
+        return (NULL); 	//OK
 	}
-    i = 0;
+    i = 0;				//OK
     while (reserve[i])
     {
         if (reserve[i ++] == '\n')
@@ -89,7 +65,8 @@ char	*ft_save(char *reserve)
         ++ i;
     leftover = malloc(sizeof(leftover) * (i - mark + 1));
     if (!leftover)
-        exit_program(reserve);
+        //exit_program(reserve);
+		return (NULL);
     j = 0;
     while (mark < i)
         leftover[j ++] = reserve[mark ++];
