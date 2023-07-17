@@ -40,6 +40,18 @@ char	*ft_get_line(char *save)
 	return (s);
 }
 
+int	present_nl(char *str)
+{
+	if (!str)
+		return (0);
+	while (*str)
+	{
+		if (*(str ++) == '\n')
+			return (1);
+	}
+	return (0);
+}
+
 char	*ft_save(char *reserve)
 {
     int     i;
