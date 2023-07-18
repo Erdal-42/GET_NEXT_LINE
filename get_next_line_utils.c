@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: elraira- <elraira-@student.42sp.org.br>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/03 10:43:18 by elraira-          #+#    #+#             */
-/*   Updated: 2021/09/05 14:17:37 by elraira-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "get_next_line.h"
 
 void print_message(char *str)
@@ -17,7 +5,6 @@ void print_message(char *str)
 	while (*str)
 		write(2, str ++, 1);
 }
-
 
 int	present_nl(char *str)
 {
@@ -31,34 +18,16 @@ int	present_nl(char *str)
 	return (0);
 }
 
-size_t	ft_strlen(char *str)
+int	ft_strlen(char *str)
 {
-	size_t	c;
+	int i;
 
-	c = 0;
-	if (!str)
+	if(!str)
 		return (0);
-	while (str[c] != '\0')
-		c++;
-	return (c);
-}
-
-char	*ft_strchr(char *s, int c)
-{
-	int	i;
-
 	i = 0;
-	if (!s)
-		return (0);
-	if (c == '\0')
-		return ((char *)&s[ft_strlen(s)]);
-	while (s[i] != '\0')
-	{
-		if (s[i] == (char) c)
-			return ((char *)&s[i]);
-		i++;
-	}
-	return (0);
+	while (str[i])
+		++ i;
+	return (i);
 }
 
 char *ft_strjoin(char *str1, char *str2)
@@ -71,10 +40,8 @@ char *ft_strjoin(char *str1, char *str2)
 	unified = (char *)malloc(sizeof(*unified) * (len + 1));
 	if (!unified)
 	{
-		free(str1);
-		free(str2);
 		print_message("error: unable to allocate memory.");
-		return (NULL);
+		return (free(str1), free(str2), NULL);
 	}
 	i = 0;
 	if (str1)
@@ -86,9 +53,7 @@ char *ft_strjoin(char *str1, char *str2)
 		}
 	}
 	while (*str2)
-	{
 		unified[i ++] = *(str2 ++);
-	}
 	unified[i] = '\0';
 	free(str1);
 	return (unified);
