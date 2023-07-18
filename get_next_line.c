@@ -62,28 +62,35 @@ char	*ft_get_line(char *reserve)
 
 char	*ft_save(char *save)
 {
-	int		i;
-	int		c;
-	char	*s;
+    int     i;
+    int     j;
+    int     mark;
+    char    *leftover;
 
-	i = 0;
-	while (save[i] && save[i] != '\n')
-		i++;
-	if (!save[i])
+    i = 0;
+    while (reserve[i])
+    {
+        if (reserve[i ++] == '\n')
+            break;
+    }
+	if (!reserve[i])
 	{
-		free(save);
+		free(reserve)
 		return (NULL);
 	}
-	s = (char *)malloc(sizeof(char) * (ft_strlen(save) - i + 1));
-	if (!s)
-		return (NULL);
-	i++;
-	c = 0;
-	while (save[i])
-		s[c++] = save[i++];
-	s[c] = '\0';
-	free(save);
-	return (s);
+    mark = i ++;
+    while (reserve[i])
+        ++ i;
+    leftover = malloc(sizeof(*leftover) * (i - mark + 1));
+    if (!leftover)
+        exit_program(reserve);
+		//return (NULL);
+    j = 0;
+    while (mark < i)
+        leftover[j ++] = reserve[mark ++];
+    free(reserve);
+    leftover[j] = '\0';
+    return (leftover);
 }
 
 char	*ft_read_and_save(int fd, char *save)
