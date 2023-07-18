@@ -1,5 +1,62 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: elraira- <elraira-@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/03 10:39:55 by elraira-          #+#    #+#             */
+/*   Updated: 2021/09/05 14:05:59 by elraira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
+void print_message(char *str)
+{
+	while (*str)
+		write(2, str ++, 1);
+}
+
+int	present_nl(char *str)
+{
+	if (!str)
+		return (0);
+	while (*str)
+	{
+		if (*(str ++) == '\n')
+			return (1);
+	}
+	return (0);
+}
+
+char	*ft_get_line(char *save)
+{
+	int		i;
+	char	*s;
+
+	i = 0;
+	if (!save[i])
+		return (NULL);
+	while (save[i] && save[i] != '\n')
+		i++;
+	s = (char *)malloc(sizeof(char) * (i + 2));
+	if (!s)
+		return (NULL);
+	i = 0;
+	while (save[i] && save[i] != '\n')
+	{
+		s[i] = save[i];
+		i++;
+	}
+	if (save[i] == '\n')
+	{
+		s[i] = save[i];
+		i++;
+	}
+	s[i] = '\0';
+	return (s);
+}
 
 void	exit_program(char *reserve)
 {
@@ -7,26 +64,7 @@ void	exit_program(char *reserve)
 	exit (EXIT_FAILURE);
 }
 
-char *get_next_line(int fd)
-{
-	static char	*reserve;
-	char		*line;
-
-	if (fd < 0 || BUFFER_SIZE < 1)
-	{
-		print_message("error: Invalid Parameter");
-		return (NULL);
-	}
-	if (!present_nl(reserve))
-		reserve = read_line(fd, reserve);
-	if (!reserve)
-		return (NULL);
-	line = get_line(reserve);
-	reserve = ft_truncate(reserve);
-	return (line);
-}
-
-char    *ft_truncate(char *reserve)
+char	*ft_save(char *reserve)
 {
     int     i;
     int     j;
@@ -59,37 +97,7 @@ char    *ft_truncate(char *reserve)
     return (leftover);
 }
 
-char	*get_line(char *reserve)
-{
-	char	*line;
-	int		i;
-	int		j;
-
-	i = 0;
-	while (reserve[i])
-	{
-		if (reserve[i] == '\n')
-			break ;
-		++ i;
-	}
-	line = malloc(sizeof(*line) * (i + 1));
-	if (!line)
-	{
-		print_message("error: Unable to allocate memory.");
-		exit_program(reserve);
-	}
-	j = 0;
-	while (j <= i)
-	{
-		line[j] = reserve[j];
-		++ j;
-	}
-	line[j] = '\0';
-	return (line);
-}
-
-
-char	*read_line(int fd, char *reserve)
+char	*ft_read_and_save(int fd, char *reserve)
 {
 	char	*buffer;
 	int		size;
@@ -120,16 +128,22 @@ char	*read_line(int fd, char *reserve)
 	free(buffer);
 	return (reserve);
 }
-/*
-int	main()
-{
-	int fd;
-	char *str;
 
-	fd = open("test.txt", O_RDONLY);
-	while ((str = get_next_line(fd)) != NULL)
-		printf("%s", str);
-	close(fd);
-	return (0);
+char	*get_next_line(int fd)
+{
+	char		*line;
+	static char	*save;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (0);
+	save = ft_read_and_save(fd, save);
+	if (!save)
+		return (NULL);
+	line = ft_get_line(save);
+	save = ft_save(save);
+	return (line);
 }
-*/
+
+
+
+
