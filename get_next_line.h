@@ -1,14 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekocak@student.42.org.tr>    				+#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/18 10:39:55 by ekocak            #+#    #+#             */
+/*   Updated: 2023/07/18 14:05:59 by ekocak           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef GETNEXTLINE_H
 # define GETNEXTLINE_H
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <unistd.h>
-#include <string.h>
-#include <fcntl.h>
-#include "get_next_line_utils.c"
-
-#define BUFFER_SIZE 5
 
 char	*read_line(int, char *);
 char	*ft_strjoin(char *, char *);
