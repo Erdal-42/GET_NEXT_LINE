@@ -15,10 +15,6 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h> 
-# include <fcntl.h> 
-
-#define BUFFER_SIZE 5
 
 /**
  * @brief computes the length of the string str up to, but not including
@@ -62,5 +58,8 @@ char			*get_next_line(int fd);
 char			*ft_get_line(char *save);
 char			*ft_save(char *save);
 char			*ft_read_and_save(int fd, char *save);
+void            print_message(char *str);
+void	        exit_program(char *reserve);
+int	            present_nl(char *str);
 
 #endif
