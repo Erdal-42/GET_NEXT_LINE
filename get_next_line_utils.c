@@ -42,30 +42,35 @@ char	*ft_strchr(char *s, int c)
 	return (0);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char *ft_strjoin(char *str1, char *str2)
 {
-	size_t	i;
-	size_t	c;
-	char	*str;
+	int 	len;
+	char 	*unified;
+	int		i;
 
-	if (!s1)
+	len = ft_strlen(str1) + ft_strlen(str2);
+	unified = (char *)malloc(sizeof(*unified) * (len + 1));
+	if (!unified)
 	{
-		s1 = (char *)malloc(1 * sizeof(char));
-		s1[0] = '\0';
+		free(str1);
+		free(str2);
+		print_message("error: unable to allocate memory.");
+		return (NULL);
 	}
-	if (!s1 || !s2)
-		return (NULL);
-	str = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-	if (str == NULL)
-		return (NULL);
-	i = -1;
-	c = 0;
-	if (s1)
-		while (s1[++i] != '\0')
-			str[i] = s1[i];
-	while (s2[c] != '\0')
-		str[i++] = s2[c++];
-	str[ft_strlen(s1) + ft_strlen(s2)] = '\0';
-	free(s1);
-	return (str);
+	i = 0;
+	if (str1)
+	{
+		while (str1[i])
+		{
+			unified[i] = str1[i];
+			++ i;
+		}
+	}
+	while (*str2)
+	{
+		unified[i ++] = *(str2 ++);
+	}
+	unified[i] = '\0';
+	free(str1);
+	return (unified);
 }
