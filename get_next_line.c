@@ -45,9 +45,8 @@ char	*ft_get_line(char *reserve)
 	i = 0;
 	while (reserve[i])
 	{
-		if (reserve[i] == '\n')
+		if (reserve[i ++] == '\n')
 			break ;
-		++ i;
 	}
 	line = malloc(sizeof(*line) * (i + 1));
 	if (!line)
@@ -61,7 +60,7 @@ char	*ft_get_line(char *reserve)
 		line[j] = reserve[j];
 		++ j;
 	}
-	if (line[j - 1])
+	if (line[j - 1] != '\0')
 		line[j] = '\0';
 	return (line);
 }
