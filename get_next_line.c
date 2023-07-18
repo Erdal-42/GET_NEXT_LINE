@@ -12,23 +12,7 @@
 
 #include "get_next_line.h"
 
-void print_message(char *str)
-{
-	while (*str)
-		write(2, str ++, 1);
-}
 
-int	present_nl(char *str)
-{
-	if (!str)
-		return (0);
-	while (*str)
-	{
-		if (*(str ++) == '\n')
-			return (1);
-	}
-	return (0);
-}
 
 char	*ft_get_line(char *save)
 {
@@ -99,17 +83,18 @@ char	*ft_save(char *reserve)
 
 char	*ft_read_and_save(int fd, char *reserve)
 {
-	char	*buffer;
-	int		size;
+	char	*buffer;	//ok
+	int		size;		//ok
 
-	buffer = malloc(sizeof(*buffer) * (BUFFER_SIZE + 1));
+	buffer = malloc(sizeof(*buffer) * (BUFFER_SIZE + 1)); //ok
 	if (!buffer)
 	{
 		print_message("error: Unable to allocate memory.");
 		exit_program(reserve);
-	}
+	}		//ok
 	size = read(fd, buffer, BUFFER_SIZE);
-	buffer[size] = '\0';
+	if (size >= 0)
+		buffer[size] = '\0';
 	if (size < 1)
 	{
 		free (buffer);
@@ -123,10 +108,11 @@ char	*ft_read_and_save(int fd, char *reserve)
 		if (present_nl(reserve))
 			break;
 		size = read(fd, buffer, BUFFER_SIZE);
-		buffer[size] = '\0';
+		if (size >= 0)
+			buffer[size] = '\0';
 	}
-	free(buffer);
-	return (reserve);
+	free(buffer);	//ok
+	return (reserve);	//ok
 }
 
 char	*get_next_line(int fd)
