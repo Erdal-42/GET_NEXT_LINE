@@ -38,31 +38,37 @@ int	present_nl(char *str)
 
 char	*ft_get_line(char *reserve)
 {
-	char	*line;
-	int		i;
-	int		j;
+    int     i;
+    int     j;
+    char    *line;
 
-	i = 0;
-	while (reserve[i])
-	{
-		if (reserve[i ++] == '\n')
-			break ;
-	}
-	line = malloc(sizeof(*line) * (i + 1));
-	if (!line)
-	{
-		print_message("error: Unable to allocate memory.");
+    i = 0
+    //we have a non NULL string
+    while (reserve[i])
+    {
+        //we need to count characters upto null or including newline
+        if (reserve[i ++] == '\n')
+            break ;
+    }
+    //then we allocate string space equal to count;
+    line = malloc(sizeof(*line) * (i + 1));
+    if (!line)
+    {
+        print_message("error: Unable to allocate memory.");
 		exit_program(reserve);
-	}
-	j = 0;
-	while (j <= i)
-	{
-		line[j] = reserve[j];
-		++ j;
-	}
-	if (line[j - 1] != '\0')
-		line[j] = '\0';
-	return (line);
+    }
+    //we copy characters from parameter to new string equal to count
+    j = 0;
+    while (j <= i)
+    {
+        line[j] = reserve[j];
+        ++ j;
+    }
+    //we append a NULL character to the new string.
+    if (i != 0)
+        line[j] = '\0';
+    //we return the new string.
+    return (line);   
 }
 /*
 {
