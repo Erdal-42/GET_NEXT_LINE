@@ -24,24 +24,14 @@ void	exit_program(char *reserve)
 	exit (EXIT_FAILURE);
 }
 
-int	present_nl(char *str)
-{
-	if (!str)
-		return (0);
-	while (*str)
-	{
-		if (*(str ++) == '\n')
-			return (1);
-	}
-	return (0);
-}
-
 char	*ft_get_line(char *reserve)
 {
     int     i;
     int     j;
     char    *line;
 
+    if (reserve[0] == '\0')
+        return (NULL);
     i = 0;
     //we have a non NULL string
     while (reserve[i])
@@ -69,99 +59,56 @@ char	*ft_get_line(char *reserve)
     //we return the new string.
     return (line);   
 }
-/*
+
+char	*ft_save(char *save)
 {
 	int		i;
+	int		c;
 	char	*s;
 
 	i = 0;
-	if (!save[i])
-		return (NULL);
 	while (save[i] && save[i] != '\n')
 		i++;
-	s = (char *)malloc(sizeof(char) * (i + 2));
+	if (!save[i])
+	{
+		free(save);
+		return (NULL);
+	}
+	s = (char *)malloc(sizeof(char) * (ft_strlen(save) - i + 1));
 	if (!s)
 		return (NULL);
-	i = 0;
-	while (save[i] && save[i] != '\n')
-	{
-		s[i] = save[i];
-		i++;
-	}
-	if (save[i] == '\n')
-	{
-		s[i] = save[i];
-		i++;
-	}
-	s[i] = '\0';
+	i++;
+	c = 0;
+	while (save[i])
+		s[c++] = save[i++];
+	s[c] = '\0';
+	free(save);
 	return (s);
-}*/
-
-char	*ft_save(char *reserve)
-{
-    int     i;
-    int     j;
-    int     mark;
-    char    *leftover;
-
-    i = 0;
-    while (reserve[i])
-    {
-        if (reserve[i ++] == '\n')
-            break;
-    }
-	if (!reserve[i])
-	{
-		free(reserve);
-		return (NULL);
-	}
-    mark = i ++;
-    while (reserve[i])
-        ++ i;
-    leftover = malloc(sizeof(*leftover) * (i - mark + 1));
-    if (!leftover)
-        exit_program(reserve);
-		//return (NULL);
-    j = 0;
-    while (mark < i)
-        leftover[j ++] = reserve[mark ++];
-    free(reserve);
-    leftover[j] = '\0';
-    return (leftover);
 }
 
-char	*ft_read_and_save(int fd, char *reserve)
+char	*ft_read_and_save(int fd, char *save)
 {
-	char	*buffer;	//ok
-	int		size;		//ok
+	char	*buff;
+	int		read_bytes;
 
-	buffer = malloc(sizeof(*buffer) * (BUFFER_SIZE + 1)); //ok
-	if (!buffer)
-	{
-		print_message("error: Unable to allocate memory.");
-		exit_program(reserve);
-	}		//ok
-	size = read(fd, buffer, BUFFER_SIZE);
-	if (size < 1)
-	{
-		free (buffer);
+	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buff)
 		return (NULL);
-	}
-	buffer[size] = '\0';
-	while (size > 0)
+	read_bytes = 1;
+	while (!ft_strchr(save, '\n') && read_bytes != 0)
 	{
-		reserve = ft_strjoin(reserve, buffer);
-		if (!reserve)
-			exit_program(reserve);
-		if (present_nl(reserve))
-			break;
-		size = read(fd, buffer, BUFFER_SIZE);
-		buffer[size] = '\0';
+		read_bytes = read(fd, buff, BUFFER_SIZE);
+		if (read_bytes == -1)
+		{
+			free(buff);
+			return (NULL);
+		}
+		buff[read_bytes] = '\0';
+		save = ft_strjoin(save, buff);
 	}
-	free(buffer);	//ok
-	return (reserve);	//ok
+	free(buff);
+	return (save);
 }
-
 
 char	*get_next_line(int fd)
 {
@@ -177,7 +124,3 @@ char	*get_next_line(int fd)
 	save = ft_save(save);
 	return (line);
 }
-
-
-
-
