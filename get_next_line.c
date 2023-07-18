@@ -12,7 +12,29 @@
 
 #include "get_next_line.h"
 
+void print_message(char *str)
+{
+	while (*str)
+		write(2, str ++, 1);
+}
 
+void	exit_program(char *reserve)
+{
+	free (reserve);
+	exit (EXIT_FAILURE);
+}
+
+int	present_nl(char *str)
+{
+	if (!str)
+		return (0);
+	while (*str)
+	{
+		if (*(str ++) == '\n')
+			return (1);
+	}
+	return (0);
+}
 
 char	*ft_get_line(char *save)
 {
@@ -42,12 +64,6 @@ char	*ft_get_line(char *save)
 	return (s);
 }
 
-void	exit_program(char *reserve)
-{
-	free (reserve);
-	exit (EXIT_FAILURE);
-}
-
 char	*ft_save(char *reserve)
 {
     int     i;
@@ -63,7 +79,7 @@ char	*ft_save(char *reserve)
     }
 	if (!reserve[i])
 	{
-		free(reserve)
+		free(reserve);
 		return (NULL);
 	}
     mark = i ++;
@@ -93,14 +109,13 @@ char	*ft_read_and_save(int fd, char *reserve)
 		exit_program(reserve);
 	}		//ok
 	size = read(fd, buffer, BUFFER_SIZE);
-	if (size >= 0)
-		buffer[size] = '\0';
 	if (size < 1)
 	{
 		free (buffer);
 		return (NULL);
 	}
-	while (size > 0)
+	buffer[size] = '\0';
+	while (size >= 0)
 	{
 		reserve = ft_strjoin(reserve, buffer);
 		if (!reserve)
@@ -114,6 +129,7 @@ char	*ft_read_and_save(int fd, char *reserve)
 	free(buffer);	//ok
 	return (reserve);	//ok
 }
+
 
 char	*get_next_line(int fd)
 {
