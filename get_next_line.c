@@ -42,7 +42,7 @@ char	*ft_get_line(char *reserve)
     int     j;
     char    *line;
 
-    i = 0
+    i = 0;
     //we have a non NULL string
     while (reserve[i])
     {
@@ -59,14 +59,13 @@ char	*ft_get_line(char *reserve)
     }
     //we copy characters from parameter to new string equal to count
     j = 0;
-    while (j <= i)
+    while (j < i)
     {
         line[j] = reserve[j];
         ++ j;
     }
     //we append a NULL character to the new string.
-    if (i != 0)
-        line[j] = '\0';
+    line[j] = '\0';
     //we return the new string.
     return (line);   
 }
