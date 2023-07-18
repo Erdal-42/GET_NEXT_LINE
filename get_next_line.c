@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekocak@student.42.org.tr>    				+#+  +:+       +#+        */
+/*   By: ekocak@student.42.org.tr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:39:55 by ekocak            #+#    #+#             */
 /*   Updated: 2023/07/18 14:05:59 by ekocak           ###   ########.fr       */
