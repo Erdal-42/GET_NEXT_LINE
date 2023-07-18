@@ -97,7 +97,7 @@ char	*ft_save(char *reserve)
     return (leftover);
 }
 
-char	*ft_read_and_save(int fd, char *reserve)
+char	*read_line(int fd, char *reserve)
 {
 	char	*buffer;	//ok
 	int		size;		//ok
@@ -109,13 +109,13 @@ char	*ft_read_and_save(int fd, char *reserve)
 		exit_program(reserve);
 	}		//ok
 	size = read(fd, buffer, BUFFER_SIZE);
-	if (size < 1)
+	if (size < 0)
 	{
 		free (buffer);
 		return (NULL);
 	}
 	buffer[size] = '\0';
-	while (size >= 0)
+	while (size > 0)
 	{
 		reserve = ft_strjoin(reserve, buffer);
 		if (!reserve)
@@ -123,8 +123,7 @@ char	*ft_read_and_save(int fd, char *reserve)
 		if (present_nl(reserve))
 			break;
 		size = read(fd, buffer, BUFFER_SIZE);
-		if (size >= 0)
-			buffer[size] = '\0';
+		buffer[size] = '\0';
 	}
 	free(buffer);	//ok
 	return (reserve);	//ok
