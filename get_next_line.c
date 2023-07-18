@@ -12,28 +12,10 @@
 
 #include "get_next_line.h"
 
-void print_message(char *str)
-{
-	while (*str)
-		write(2, str ++, 1);
-}
-
 void	exit_program(char *reserve)
 {
 	free (reserve);
 	exit (EXIT_FAILURE);
-}
-
-int	present_nl(char *str)
-{
-	if (!str)
-		return (0);
-	while (*str)
-	{
-		if (*(str ++) == '\n')
-			return (1);
-	}
-	return (0);
 }
 
 char	*ft_get_line(char *reserve)
@@ -79,17 +61,17 @@ char	*ft_save(char *reserve)
     int     mark;
     char    *leftover;
 
+	if (!reserve[i])
+	{
+		free(reserve);
+		return (NULL);
+	}
     i = 0;
     while (reserve[i])
     {
         if (reserve[i ++] == '\n')
             break;
     }
-	if (!reserve[i])
-	{
-		free(reserve);
-		return (NULL);
-	}
     mark = i ++;
     while (reserve[i])
         ++ i;
@@ -150,4 +132,16 @@ char	*get_next_line(int fd)
 	line = ft_get_line(save);
 	save = ft_save(save);
 	return (line);
+}
+
+int	main()
+{
+	int fd;
+	char *str;
+
+	fd = open("test.txt", O_RDONLY);
+	while ((str = get_next_line(fd)) != NULL)
+		printf("%s", str);
+	close(fd);
+	return (0);
 }

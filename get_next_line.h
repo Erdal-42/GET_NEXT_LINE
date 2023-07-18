@@ -15,7 +15,9 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include "get_next_line_utils.c"
 
+#define BUFFER_SIZE 10
 /**
  * @brief computes the length of the string str up to, but not including
  * the terminating null character.

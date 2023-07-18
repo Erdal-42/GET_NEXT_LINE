@@ -12,6 +12,25 @@
 
 #include "get_next_line.h"
 
+void print_message(char *str)
+{
+	while (*str)
+		write(2, str ++, 1);
+}
+
+
+int	present_nl(char *str)
+{
+	if (!str)
+		return (0);
+	while (*str)
+	{
+		if (*(str ++) == '\n')
+			return (1);
+	}
+	return (0);
+}
+
 size_t	ft_strlen(char *str)
 {
 	size_t	c;
